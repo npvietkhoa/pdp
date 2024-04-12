@@ -4,5 +4,5 @@ project(pdp)
 set(CMAKE_CXX_STANDARD 14)
 
 add_executable(pdp
-        threads.cpp
-        thread_guard.cpp)
+        "Shared Memory/threads.cpp"
+        "Shared Memory/thread_guard.cpp")

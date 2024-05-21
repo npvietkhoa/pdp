@@ -35,7 +35,9 @@ public:
 template<typename T>
 void threadsafe_queue<T>::wait_and_pop(T &value) {
     std::unique_lock<std::mutex> lk(mut);
-    cond.wait(lk, [this]() { return !this.data.empty(); } );
+    cond.wait(lk, [this]() {
+        return !this->data.empty();
+    } );
     value = this->data.front();
     data.pop();
 }

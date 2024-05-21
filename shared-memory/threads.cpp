@@ -36,9 +36,6 @@ int main() {
     foo_func_thread.join();
     bar_func_thread.join();
 
-    foo_func_thread.join();
-    bar_func_thread.join();
-
 //    execute independently of the thread handle
 //    foo_thread.detach();
 //    bar_thread.detach();

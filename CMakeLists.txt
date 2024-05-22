@@ -38,10 +38,11 @@ add_executable(threadsafe_queue
 target_link_libraries(naive_queue gtest_main)
 target_link_libraries(threadsafe_queue gtest_main)
 
-add_test(naive shared-memory/tests/test_naive_queue.cpp)
-add_test(thr shared-memory/tests/test_threadsafe_queue.cpp)
+add_test(naive_queue shared-memory/tests/test_naive_queue.cpp)
+add_test(thread shared-memory/tests/test_threadsafe_queue.cpp)
 
 
-
-
-
+add_executable(mem_consistent
+        shared-memory/mem_consistent.cpp
+        shared-memory/mem_consistent_no_fences.cpp
+)

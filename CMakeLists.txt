@@ -8,33 +8,38 @@ project(pdp)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Set compiler flags to use C++11 standard
-set(CXXFLAGS -std=c++11)
-
 # CMake policy to avoid warnings
 if(POLICY CMP0135)
     cmake_policy(SET CMP0135 NEW)
-    set(CMAKE_POLICY_DEFAULT_CMP0135 NEW)
 endif()
 
-# Fetch GoogleTest from Github
-include(FetchContent)
-FetchContent_Declare(
-        googletest
-        URL https://github.com/google/googletest/archive/e39786088138f2749d64e9e90e0f9902daa77c40.zip
-)
-FetchContent_MakeAvailable(googletest)
-include(GoogleTest)
+# Option to use pre-downloaded GoogleTest
+option(USE_PREDOWNLOADED_GTEST "Use pre-downloaded GoogleTest" OFF)
 
-# Find GoogleTest package
-find_package(GTest REQUIRED)
+if(USE_PREDOWNLOADED_GTEST)
+    # Set GoogleTest directories
+    set(GTEST_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/thirdparty/googletest/googletest/include)
+    set(GTEST_LIBRARY ${CMAKE_SOURCE_DIR}/thirdparty/googletest/lib/libgtest.a)
+    set(GTEST_MAIN_LIBRARY ${CMAKE_SOURCE_DIR}/thirdparty/googletest/lib/libgtest_main.a)
 
-# Set the binary name
-set(BINARY ${CMAKE_PROJECT_NAME})
+    # Add GoogleTest include directory
+    include_directories(${GTEST_INCLUDE_DIR})
+else()
+    # Fetch GoogleTest from GitHub
+    include(FetchContent)
+    FetchContent_Declare(
+            googletest
+            URL https://github.com/google/googletest/archive/e39786088138f2749d64e9e90e0f9902daa77c40.zip
+    )
+    FetchContent_MakeAvailable(googletest)
 
-# Find all source files
-set(SOURCES)
-file(GLOB_RECURSE SOURCES LIST_DIRECTORIES true *.h *.cpp)
+    # Link GoogleTest libraries
+    set(GTEST_LIBRARY GTest::gtest)
+    set(GTEST_MAIN_LIBRARY GTest::gtest_main)
+endif()
+
+# Enable testing
+enable_testing()
 
 # Define executables
 add_executable(threads "shared-memory/threads.cpp" "shared-memory/thread_guard.cpp")
@@ -58,15 +63,20 @@ foreach(TEST_SOURCE ${TEST_SOURCES})
     # Create an executable for the test
     add_executable(${TEST_NAME} ${TEST_SOURCE})
 
-    # Link the executable with GoogleTest
-    target_link_libraries(${TEST_NAME} GTest::gtest_main)
+    # Link the executable with GoogleTest libraries
+    if(USE_PREDOWNLOADED_GTEST)
+        target_link_libraries(${TEST_NAME} ${GTEST_LIBRARY} ${GTEST_MAIN_LIBRARY} pthread)
+    else()
+        target_link_libraries(${TEST_NAME} ${GTEST_LIBRARY} ${GTEST_MAIN_LIBRARY})
+    endif()
+
+    # Register the test with CTest
+    add_test(NAME ${TEST_NAME} COMMAND ${TEST_NAME})
 
     # Add the test executable to the list
     list(APPEND TEST_EXECUTABLES ${TEST_NAME})
 endforeach()
 
 # Discover and register all tests
+include(GoogleTest)
 gtest_discover_tests(${TEST_EXECUTABLES})
-
-# Enable testing
-enable_testing()

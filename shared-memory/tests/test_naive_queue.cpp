@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../naive_queue.h"
+#include "../lib/naive_queue.h"
 
 class NaiveQueueTest : public ::testing::Test {
 protected:
@@ -60,7 +60,4 @@ TEST_F(NaiveQueueTest, UnderflowTest) {
     EXPECT_THROW(queue->deq(), std::out_of_range);
 }
 
-int main(int argc, char **argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}
+

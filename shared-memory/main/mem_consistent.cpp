@@ -1,7 +1,6 @@
 //
 // Created by Khoa Nguyen on 22.05.24.
 //
-#include <iostream>
 #include "cassert"
 #include "thread"
 #include "atomic"
@@ -22,7 +21,7 @@ void bar_func() {
     assert(data == 22);
 }
 
-int mem_fence() {
+void mem_fence() {
     std::thread foo_thrd(foo_func), bar_thread(bar_func);
     foo_thrd.join();
     bar_thread.join();

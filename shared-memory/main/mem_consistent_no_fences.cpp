@@ -1,7 +1,6 @@
 //
 // Created by Khoa Nguyen on 22.05.24.
 //
-#include "iostream"
 #include "thread"
 #include "cassert"
 #include "atomic"
@@ -29,7 +28,6 @@ int main() {
     std::thread foo_thrd(foo_nf_func), bar_thrd(bar_nf_func);
     foo_thrd.join();
     bar_thrd.join();
-
     mem_fence();
 }
 

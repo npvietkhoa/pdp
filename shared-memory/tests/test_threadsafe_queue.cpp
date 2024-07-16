@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <thread>
 #include <algorithm>
-#include "../threadsafe_queue.h"
+#include "../lib/threadsafe_queue.h"
 
 class ThreadSafeQueueTest : public ::testing::Test {
 protected:
@@ -80,7 +80,3 @@ TEST_F(ThreadSafeQueueTest, WaitAndPopOnEmptyQueue) {
     t.join();
 }
 
-int main(int argc, char **argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}

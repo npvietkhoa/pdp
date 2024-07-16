@@ -8,19 +8,28 @@
 #include "queue"
 #include "mutex"
 
-template<typename T> class threadsafe_queue {
+template<typename T>
+class threadsafe_queue {
 private:
-    std::queue<T> data;
-    std::mutex mut;
+    std::queue<T>           data;
+    mutable std::mutex      mut;
     std::condition_variable cond;
 
 public:
     threadsafe_queue() : data(), mut(), cond() {};
-    threadsafe_queue(threadsafe_queue const& other_queue);
+
+    threadsafe_queue(threadsafe_queue const &other_queue);
 
     void push(T new_value);
-    void wait_and_pop(T& value);
+
+    void wait_and_pop(T &value);
 };
+
+template<typename T>
+threadsafe_queue<T>::threadsafe_queue(const threadsafe_queue &other_queue) {
+    std::lock_guard<std::mutex> lk(other_queue.mut);
+    data = other_queue.data;
+}
 
 
 /**
@@ -37,7 +46,7 @@ void threadsafe_queue<T>::wait_and_pop(T &value) {
     std::unique_lock<std::mutex> lk(mut);
     cond.wait(lk, [this]() {
         return !this->data.empty();
-    } );
+    });
     value = this->data.front();
     data.pop();
 }
@@ -55,21 +64,5 @@ void threadsafe_queue<T>::push(T new_value) {
     data.push(new_value);
     cond.notify_one();
 }
-
-
-
-/**
- *
- * @tparam T
- * @param other_queue
- */
-template<typename T>
-threadsafe_queue<T>::threadsafe_queue(const threadsafe_queue &other_queue) {
-    // lock the mutex
-    std::lock_guard<std::mutex> lk(other_queue.mut);
-    data = other_queue.data;
-}
-
-
 
 #endif //PDP_THREADSAFE_QUEUE_H

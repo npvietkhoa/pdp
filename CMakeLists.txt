@@ -33,6 +33,8 @@ else()
     )
     FetchContent_MakeAvailable(googletest)
 
+    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+    FetchContent_MakeAvailable(googletest)
     # Link GoogleTest libraries
     set(GTEST_LIBRARY GTest::gtest)
     set(GTEST_MAIN_LIBRARY GTest::gtest_main)

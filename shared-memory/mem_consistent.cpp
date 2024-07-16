@@ -4,6 +4,7 @@
 #include <iostream>
 #include "cassert"
 #include "thread"
+#include "atomic"
 
 std::atomic<bool> flag(false);
 int               data;

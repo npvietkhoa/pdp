@@ -1,0 +1,31 @@
+cc_binary(
+    name = "mem-consistent",
+    srcs = glob(["main/mem_consistent*.cpp"]),
+)
+
+cc_binary(
+    name = "move-semantic",
+    srcs = ["main/move_semantics.cpp"],
+)
+
+cc_binary(
+    name = "threads",
+    srcs = glob(["main/thread*.cpp"]),
+)
+
+cc_library(
+    name = "shared-mem-lib",
+    srcs = glob(["lib/*.h"]),
+    visibility = ["//visibility:public"]
+)
+
+cc_test(
+    name = "shared-mem-test",
+    srcs = glob(["tests/*.cpp"]),
+    size = "small",
+    deps = [
+        ":shared-mem-lib",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main"
+    ]
+)

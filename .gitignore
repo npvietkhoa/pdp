@@ -33,6 +33,7 @@
 
 # Bazel output directories
 bazel-*
+!bazel-ci.yml
 
 # User-specific Bazel settings
 .bazelrc.user

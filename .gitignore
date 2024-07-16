@@ -30,3 +30,16 @@
 *.exe
 *.out
 *.app
+
+# Bazel output directories
+bazel-*
+!bazel-ci.yml
+
+# User-specific Bazel settings
+.bazelrc.user
+
+# Build artifacts and logs
+**/bazel-out/
+**/bazel-bin/
+**/bazel-testlogs/
+**/bazel-genfiles/

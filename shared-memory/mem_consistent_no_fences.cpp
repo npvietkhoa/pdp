@@ -4,6 +4,7 @@
 #include "iostream"
 #include "thread"
 #include "cassert"
+#include "atomic"
 
 
 std::atomic<bool> nf_flag(false);

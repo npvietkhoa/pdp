@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include <thread>
+#include <algorithm>
 #include "../threadsafe_queue.h"
 
 class ThreadSafeQueueTest : public ::testing::Test {

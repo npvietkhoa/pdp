@@ -23,6 +23,7 @@ FetchContent_Declare(
         googletest
         URL https://github.com/google/googletest/archive/e39786088138f2749d64e9e90e0f9902daa77c40.zip
 )
+FetchContent_MakeAvailable(googletest)
 include(GoogleTest)
 
 # Find GoogleTest package
